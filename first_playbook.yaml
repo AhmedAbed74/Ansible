@@ -1,0 +1,32 @@
+---
+- name: install node and npm
+  hosts: aws
+  become: true
+  tasks:
+  - name: update apt repo and cache
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600 
+  - name: install nodejs and npm
+    apt:
+      pkg:
+       - nodejs
+       - npm 
+
+- name: deploy node js app
+  hosts: aws
+  become: true
+  tasks:  
+    - name: copy nodejs folder to a server
+      unarchive: 
+        src: /media/ahmedabed/Matrix/Courses/Devops/Ansible/simple-nodejs/nodejs-app-1.0.0.tgz
+        dest: /root/
+    - name: install dependencies
+      npm:
+        path: /root/package
+    - name: Start the application
+      command: node /root/package/app/server
+      async: 1000
+      poll: 0 
+    - name: Ensure app is running
+      shell: ps aux | grep node      
+      regirster: app_status
+    - debug: msg={{app_status}}
