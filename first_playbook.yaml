@@ -11,6 +11,15 @@
        - nodejs
        - npm 
 
+- name: creat linux user
+  hosts: aws
+  tasks:
+    - name:
+      user: 
+        name: ahmed
+        comment: created by ansible
+        group: admin
+
 - name: deploy node js app
   hosts: aws
   become: true
@@ -18,12 +27,12 @@
     - name: copy nodejs folder to a server
       unarchive: 
         src: /media/ahmedabed/Matrix/Courses/Devops/Ansible/simple-nodejs/nodejs-app-1.0.0.tgz
-        dest: /root/
+        dest: /ahmed/
     - name: install dependencies
       npm:
-        path: /root/package
+        path: /ahmed/package
     - name: Start the application
-      command: node /root/package/app/server
+      command: node /ahmed/package/app/server
       async: 1000
       poll: 0 
     - name: Ensure app is running
