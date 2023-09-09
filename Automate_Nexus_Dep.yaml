@@ -81,3 +81,11 @@
           run_as_user="nexus"
     - name: start nexus
       command: /opt/nexus/bin/nexus start
+    - name : verify running
+      shell: ps aux | grep nexus
+      register: app_status
+    - debug: msg={{app_status.stdout_lines}}
+    - name: check with netstat
+      shell: netstat -plnt
+      register: app_sta
+    - debug: msg={{app_sta.stdout.lines}}
