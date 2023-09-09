@@ -41,8 +41,6 @@
       shell: mv {{find_result.files[0].path}} /opt/nexus
       when: not stat_result.stat.exists
 
-
-
 - name: Create nexus user
   hosts: aws
   become: true
